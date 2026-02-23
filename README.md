@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="skyz_spy_scalper_logo.svg" alt="SKYZ SPY Scalper Logo" width="100%" />
+  <img src="banner.svg" alt="SKYZ SPY Scalper Logo" width="100%" />
 </p>
 
 # SKYZ SPY Scalper (Webull Custom Indicator)
