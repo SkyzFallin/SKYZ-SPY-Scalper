@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="skyz_spy_scalper_logo.svg" alt="SKYZ SPY Scalper Logo" width="100%" />
+</p>
+
 # SKYZ SPY Scalper (Webull Custom Indicator)
 
 A 1-minute optimized SPY scalping indicator built for fast stop/limit execution and short hold times (5-15 minutes).
@@ -51,7 +55,7 @@ The indicator includes three adjustable internal presets that control signal sen
 | 10 min | Balanced | Default micro-swing behavior |
 | 15 min | Cleaner swings | Fewer signals, wider targets |
 
-Change the \`PROFILE\` variable at the top of the script to switch between modes.
+Change the `PROFILE` variable at the top of the script to switch between modes.
 
 ---
 
@@ -75,6 +79,16 @@ These mark probable reversal zones, not standalone entry signals. They are inten
 4. Exit immediately if price structure breaks down
 
 Built for fast decision-making, not prediction.
+
+---
+
+## Not Financial Advice
+
+This project is provided for **educational and informational purposes only**. Nothing in this repository constitutes financial advice, investment advice, trading advice, or any other form of professional advice. The creator of this indicator is not a licensed financial advisor, broker, or dealer.
+
+Trading options and equities involves substantial risk of loss and is not suitable for all investors. Past performance of any trading system, methodology, or indicator is not necessarily indicative of future results. You should not trade with money you cannot afford to lose.
+
+**You are solely responsible for your own trading decisions.** Always do your own research and consult with a qualified financial professional before making any investment decisions.
 
 ---
 
