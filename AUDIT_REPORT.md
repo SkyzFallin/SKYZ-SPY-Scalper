@@ -22,7 +22,7 @@ The project branding and strategy explanation are clear, but the repository is c
 **Risk:** Vulnerabilities and insecure dependencies can go undetected as the project grows.
 
 **Recommendation:**
-- Add **CodeQL** scanning for supported code languages.
+- Add **CodeQL** scanning (currently configured for GitHub Actions workflows, with easy expansion to app languages when code is added).
 - Add **Dependabot** updates for GitHub Actions and package ecosystems once present.
 - Enforce branch protection in GitHub settings (required PR reviews + required checks).
 
