@@ -2,11 +2,13 @@
   <img src="banner.svg" alt="SKYZ SPY Scalper Logo" width="100%" />
 </p>
 
-![Pine Script](https://img.shields.io/badge/Pine_Script-00C853?style=flat-square&logo=tradingview&logoColor=white)
-![Webull](https://img.shields.io/badge/Webull-FF5722?style=flat-square)
-![SPY](https://img.shields.io/badge/SPY-1min_Scalping-blue?style=flat-square)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
-![Author](https://img.shields.io/badge/Author-SkyzFallin-ce9178?style=flat-square&logo=github&logoColor=white)
+<p align="center">
+  <img src="https://img.shields.io/badge/Pine_Script-00C853?style=flat-square&logo=tradingview&logoColor=white" alt="Pine Script"/>
+  <img src="https://img.shields.io/badge/Webull-FF5722?style=flat-square" alt="Webull"/>
+  <img src="https://img.shields.io/badge/SPY-1min_Scalping-blue?style=flat-square" alt="SPY"/>
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/>
+  <img src="https://img.shields.io/badge/Author-SkyzFallin-ce9178?style=flat-square&logo=github&logoColor=white" alt="Author"/>
+</p>
 
 # SKYZ SPY Scalper (Webull Custom Indicator)
 
