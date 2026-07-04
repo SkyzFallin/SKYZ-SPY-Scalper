@@ -1,0 +1,109 @@
+// SKYZ SPY Scalper w/ Profiles (5 / 10 / 15 min holds)
+// Use on SPY 1-minute chart. Change PROFILE below: 5, 10, or 15.
+study(title="SKYZ SPY Scalper Profiles", shorttitle="SKYZ-SPY-PRO", overlay=true)
+
+// ====== PROFILE SWITCH ======
+PROFILE = 10   // <-- set to 5, 10, or 15
+
+// ====== Profile parameters ======
+fastLen  = iff(PROFILE == 5,  8,  iff(PROFILE == 10,  9, 10))
+midLen   = iff(PROFILE == 5, 18,  iff(PROFILE == 10, 20, 21))
+slowLen  = iff(PROFILE == 5, 50, iff(PROFILE == 10, 50, 55))
+
+rsiLen   = iff(PROFILE == 5,  7,  iff(PROFILE == 10,  7,  9))
+rsiLong  = iff(PROFILE == 5, 53, iff(PROFILE == 10, 55, 56))
+rsiShort = iff(PROFILE == 5, 47, iff(PROFILE == 10, 45, 44))
+
+// Volatility/chop threshold (ATR% of price)
+chopTh   = iff(PROFILE == 5, 0.0008, iff(PROFILE == 10, 0.0009, 0.00105))
+
+// Stop/Target multipliers (ATR based)
+stopK    = iff(PROFILE == 5, 0.45, iff(PROFILE == 10, 0.55, 0.70))
+t1K      = iff(PROFILE == 5, 0.60, iff(PROFILE == 10, 0.75, 0.95))
+t2K      = iff(PROFILE == 5, 1.00, iff(PROFILE == 10, 1.20, 1.55))
+
+// ====== Indicators ======
+emaF = ind.ema(close, fastLen)
+emaM = ind.ema(close, midLen)
+emaS = ind.ema(close, slowLen)
+
+rsi  = ind.rsi(close, rsiLen)
+
+volMA = ind.sma(volume, 20)
+volOK = volume > volMA
+
+atr14  = ind.atr(14)
+atrPct = atr14 / close
+chopOK = atrPct > chopTh
+
+// ====== Trend filters ======
+bullTrend = emaF > emaM and emaM > emaS
+bearTrend = emaF < emaM and emaM < emaS
+
+// ====== SPY pullback entry logic ======
+// Touch mid EMA recently (last 3 bars) then reclaim fast EMA in direction of trend
+touchM = (low <= emaM) or (high >= emaM)
+touchM_recent = touchM or touchM[1] or touchM[2]
+
+reclaimUp = close > emaF and close[1] <= emaF
+reclaimDn = close < emaF and close[1] >= emaF
+
+longTrig  = bullTrend and touchM_recent and reclaimUp and rsi >= rsiLong  and volOK and chopOK
+shortTrig = bearTrend and touchM_recent and reclaimDn and rsi <= rsiShort and volOK and chopOK
+
+// ====== Plots ======
+pF = plt(data=emaF, name="Fast EMA", color=color.yellow)
+pM = plt(data=emaM, name="Mid EMA",  color=color.aqua)
+pS = plt(data=emaS, name="Slow EMA", color=color.gray)
+
+plt.fill_between(pF, pM, color=iff(emaF > emaM, color.green, color.red), opacity=28)
+
+// ====== Stop/Limit guides (ATR) ======
+stopLongGuide  = emaM - atr14 * stopK
+stopShortGuide = emaM + atr14 * stopK
+
+t1UpGuide = close + atr14 * t1K
+t2UpGuide = close + atr14 * t2K
+t1DnGuide = close - atr14 * t1K
+t2DnGuide = close - atr14 * t2K
+
+plt(data=stopLongGuide,  name="Stop Guide (Long)",  color=color.lime)
+plt(data=stopShortGuide, name="Stop Guide (Short)", color=color.red)
+
+plt(data=t1UpGuide, name="Target 1 Up", color=color.lime)
+plt(data=t2UpGuide, name="Target 2 Up", color=color.lime)
+plt(data=t1DnGuide, name="Target 1 Down", color=color.red)
+plt(data=t2DnGuide, name="Target 2 Down", color=color.red)
+
+// ====== Signal dots (Webull-compatible) ======
+longDot  = iff(longTrig,  low,  none)
+shortDot = iff(shortTrig, high, none)
+
+plt(data=longDot,  name="LONG dot",  color=color.lime, type=plt.type_circles)
+plt(data=shortDot, name="SHORT dot", color=color.red,  type=plt.type_circles)
+// ====== Potential Top/Bottom (Exhaustion + Divergence) ======
+// NOTE: These are "probable reversal zones", not guarantees.
+// Best used when emaF and emaM are flattening (range) or after a big push.
+
+stretchK = 1.1   // 0.9 = more signals, 1.3 = fewer/stronger
+stretchedUp = (close - emaM) > (atr14 * stretchK)
+stretchedDn = (emaM - close) > (atr14 * stretchK)
+
+// Simple 3-bar RSI divergence check
+divTop = high > high[1] and rsi < rsi[1]
+divBot = low  < low[1]  and rsi > rsi[1]
+
+// Prefer these in chop/range (avoid fading strong trends)
+trendStrongUp = bullTrend and rsi >= 58
+trendStrongDn = bearTrend and rsi <= 42
+rangeOK = not trendStrongUp and not trendStrongDn
+
+topSig = stretchedUp and divTop and rangeOK and chopOK
+botSig = stretchedDn and divBot and rangeOK and chopOK
+
+topDot = iff(topSig, high, none)
+botDot = iff(botSig, low,  none)
+
+// Purple dot = potential top, Blue dot = potential bottom
+plt(data=topDot, name="Potential TOP", color=color.purple, type=plt.type_circles)
+plt(data=botDot, name="Potential BOTTOM", color=color.blue,  type=plt.type_circles)
